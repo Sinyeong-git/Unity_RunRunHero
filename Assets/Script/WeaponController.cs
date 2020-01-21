@@ -23,7 +23,7 @@ public class WeaponController : MonoBehaviour
 
     public void AttackEnd()
     {
-        Debug.Log("공격종료");
+        //Debug.Log("공격종료");
         sword_ani.Play("sword_idle");
         PlayerController.isAttacking = false;
         sword_ani.SetBool("sword_attack", false);

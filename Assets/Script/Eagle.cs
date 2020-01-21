@@ -8,9 +8,9 @@ public class Eagle : MonoBehaviour
     SpriteRenderer spriteRenderer;
 
     //이글 스텟
-    float eagle_hp = 10;
-    float  eagle_speed = 5;
-    public float eagle_damage = 4;
+    float eagle_hp;
+    float  eagle_speed;
+    public float eagle_damage;
 
     //상태 판정
     public bool canAttack;
@@ -19,13 +19,16 @@ public class Eagle : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        eagle_hp = 20;
+        eagle_speed = 5;
+        eagle_damage = 1;
 
         PlayerController = GameObject.Find("Character").GetComponent<PlayerController>();
         spriteRenderer = this.GetComponent<SpriteRenderer>();
     }
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
         //좌측 이동
         transform.Translate(Vector3.left * eagle_speed * Time.deltaTime);
@@ -42,23 +45,26 @@ public class Eagle : MonoBehaviour
     public void player_hit()
     {
         //(움직이는 값, 길이)
-        this.transform.DOMoveX(1, 0.5f);
+        this.transform.DOMoveX( this.transform.position.x + 2f , 0.5f);
     }
 
     public void eagle_hit()
     {
-        Debug.Log("공격성공");
-        this.transform.DOMoveX(2, 0.5f);
-        this.eagle_hp -= PlayerController.player_dmg;
-        isUnbeatTime = true;
-        StartCoroutine("UnBeatTime");
+        if (isUnbeatTime == false)
+        {
+            Debug.Log("공격성공");
+            this.transform.DOMoveX(this.transform.position.x + 2f, 0.5f);
+            this.eagle_hp -= PlayerController.player_dmg;
+            isUnbeatTime = true;
+            StartCoroutine("UnBeatTime");
+        }
     }
 
     IEnumerator UnBeatTime()
     {
         int countTime = 0;
         
-        while(countTime < 5)
+        while(countTime < 4)
         {
             if (countTime % 2 == 0)
             {
@@ -67,9 +73,9 @@ public class Eagle : MonoBehaviour
             else
                 spriteRenderer.color = new Color32(255, 255, 255, 180);
 
-            yield return new WaitForSeconds(0.2f);
-
             countTime++;
+
+            yield return new WaitForSeconds(0.1f);
         }
 
         spriteRenderer.color = new Color32(255, 255, 255, 255);

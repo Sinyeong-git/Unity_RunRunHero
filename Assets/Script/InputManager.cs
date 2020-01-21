@@ -23,10 +23,7 @@ public class InputManager : MonoBehaviour, IPointerDownHandler, IPointerUpHandle
             PlayerController.PlayerDefense();
             PlayerController.isBlock = true;
         }
-        if(Input.GetKey(KeyCode.X))
-        {
-            check = true;
-        }
+
         
         
         if (!check)
@@ -34,13 +31,19 @@ public class InputManager : MonoBehaviour, IPointerDownHandler, IPointerUpHandle
             PlayerController.PlayerDefenseEnd();
             PlayerController.isBlock = false;
         }
-        
 
-        if(Input.GetKeyUp(KeyCode.X))
+
+
+        if (Input.GetKey(KeyCode.X))
         {
-            check = false;
+            check = true;
         }
 
+        if (Input.GetKeyUp(KeyCode.X))
+        {
+            check = false;
+            PlayerController.PlayerParrying();
+        }
 
         if (Input.GetKey(KeyCode.Z))
         {
@@ -57,6 +60,7 @@ public class InputManager : MonoBehaviour, IPointerDownHandler, IPointerUpHandle
     public void OnPointerUp(PointerEventData eventData)
     {
         check = false;
+        PlayerController.PlayerParrying();
     }
 
 
